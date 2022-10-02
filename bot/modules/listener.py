@@ -331,7 +331,7 @@ class MirrorLeechListener:
             buttons.buildbutton("View links in PM", f"{botstart}")
 
             if PICS:
-                sendPhoto(msg + botpm, self.bot, self.message, random.choice(PICS), buttons.build_menu(2))
+                sendMarkup(msg + botpm, self.bot, self.message, buttons.build_menu(2))
             else:
                 sendMarkup(msg + botpm, self.bot, self.message, buttons.build_menu(2))
             try:
