@@ -227,6 +227,7 @@ def start(update, context):
     if CustomFilters.authorized_user(update) or CustomFilters.authorized_chat(update):
         start_string = f'''<b>My Name is Millie Bobby Brown! An Advanced Mirror Bot to Leech Torrent and Direct Links...
 Tap /{BotCommands.HelpCommand} to get a list of available commands
+
 © Spidey | Mindflayer's Mirror</b>
 '''
         if PICS:
@@ -234,7 +235,7 @@ Tap /{BotCommands.HelpCommand} to get a list of available commands
         else:
             sendMessage(start_string, context.bot, update.message)
     else:
-        text = f"You're Not Authorized user!"
+        text = f"<b>It is an Official Bot of Mindflayer's Mirror. You can get Access only within the Group!</b>"
         if PICS:
             sendPhoto(text, context.bot, update.message, random.choice(PICS))
         else:
