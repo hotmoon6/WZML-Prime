@@ -224,28 +224,21 @@ def stats(update, context):
         sendMessage(stats, context.bot, update.message)
 
 def start(update, context):
-    buttons = ButtonMaker()
-    if EMOJI_THEME is True:
-        buttons.buildbutton(f"😎 {START_BTN1_NAME}", f"{START_BTN1_URL}")
-        buttons.buildbutton(f"🔥 {START_BTN2_NAME}", f"{START_BTN2_URL}")
-    else:
-        buttons.buildbutton(f"{START_BTN1_NAME}", f"{START_BTN1_URL}")
-        buttons.buildbutton(f"{START_BTN2_NAME}", f"{START_BTN2_URL}")
-    reply_markup = buttons.build_menu(2)
     if CustomFilters.authorized_user(update) or CustomFilters.authorized_chat(update):
-        start_string = f'''This bot can mirror all your links to Google Drive!
-Type /{BotCommands.HelpCommand} to get a list of available commands
+        start_string = f'''<b>My Name is Millie Bobby Brown! An Advanced Mirror Bot to Leech Torrent and Direct Links...
+Tap /{BotCommands.HelpCommand} to get a list of available commands
+© Spidey | Mindflayer's Mirror</b>
 '''
         if PICS:
-            sendPhoto(start_string, context.bot, update.message, random.choice(PICS), reply_markup)
+            sendPhoto(start_string, context.bot, update.message, random.choice(PICS))
         else:
-            sendMarkup(start_string, context.bot, update.message, reply_markup)
+            sendMessage(start_string, context.bot, update.message)
     else:
-        text = f"Not Authorized user, deploy your own mirror bot"
+        text = f"You're Not Authorized user!"
         if PICS:
-            sendPhoto(text, context.bot, update.message, random.choice(PICS), reply_markup)
+            sendPhoto(text, context.bot, update.message, random.choice(PICS))
         else:
-            sendMarkup(text, context.bot, update.message, reply_markup)
+            sendMessage(text, context.bot, update.message)
 
 
 def restart(update, context):
@@ -311,8 +304,27 @@ def log(update, context):
 
 
 help_string = '''
-<b><a href='https://github.com/codewithweeb/mirror-with-weeb'>WeebZone</a></b> - The Ultimate Telegram MIrror-Leech Bot to Upload Your File & Link in Google Drive & Telegram
-Choose a help category:
+Basic Commands :-
+
+NOTE: After the Command Leave a single Space
+
+/mirror2: [url] Start mirroring to Google Drive.
+
+/mirror2 https://yoururl.com
+
+or (Reply with URL)
+
+/qbmirror2: [magnet link] or Reply with Torrent - Start Mirroring to Google Drive using qBittorrent.
+
+/qbmirror2 magnet:?xt=urn:btih:f2cd08296a3...
+
+or (Reply with Torrent)
+
+/clone2 [drive_url]: Copy Others file/folder to Google Drive.
+
+/clone2 https://drive.google.com/file/d/1e-fy8zXyz
+
+Complete Guide of Commands:-
 '''
 
 help_string_telegraph_user = f'''
