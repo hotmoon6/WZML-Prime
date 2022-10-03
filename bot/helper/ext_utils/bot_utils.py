@@ -30,8 +30,8 @@ PAGES = 0
 
 class MirrorStatus:
     if EMOJI_THEME is True:
-        STATUS_UPLOADING = "📤 Upload"
-        STATUS_DOWNLOADING = "📥 Download"
+        STATUS_UPLOADING = "🔺 Uploading"
+        STATUS_DOWNLOADING = "🔻 Downloading"
         STATUS_CLONING = "♻️ Clone"
         STATUS_WAITING = "💤 Queue"
         STATUS_PAUSED = "⛔️ Pause"
@@ -39,11 +39,11 @@ class MirrorStatus:
         STATUS_EXTRACTING = "📂 Extract"
         STATUS_SPLITTING = "✂️ Split"
         STATUS_CHECKING = "📝 CheckUp"
-        STATUS_SEEDING = "🌧 Seed"
+        STATUS_SEEDING = "🌱 Seed"
     else:
-        STATUS_UPLOADING = "Upload"
-        STATUS_DOWNLOADING = "Download"
-        STATUS_CLONING = "Clone"
+        STATUS_UPLOADING = "Uploading in Progress"
+        STATUS_DOWNLOADING = "Downloading in Progress"
+        STATUS_CLONING = "Cloning"
         STATUS_WAITING = "Queue"
         STATUS_PAUSED = "Pause"
         STATUS_ARCHIVING = "Archive"
@@ -168,7 +168,7 @@ def get_progress_bar_string(status):
 
 def get_readable_message():
     with download_dict_lock:
-        msg = f""
+        msg = f"<b><i>Bot of Mindflayer's Mirror</i></b>"
         if STATUS_LIMIT is not None:
             tasks = len(download_dict)
             global pages
@@ -210,7 +210,7 @@ def get_readable_message():
                     try:
                         chatid = str(download.message.chat.id)[4:]
                         if EMOJI_THEME is True:
-                            msg += f'\n<b>├🌐 Source: </b><a href="https://t.me/c/{chatid}/{download.message.message_id}">{download.message.from_user.first_name}</a> | <b>Id :</b> <code>{download.message.from_user.id}</code>'
+                            msg += f'\n<b>├🌐 Adder: </b><code>{download.message.from_user.first_name}</code> | <b>Id :</b> <code>{download.message.from_user.id}</code>'
                             msg += f"\n<b>╰❌ </b><code>/{BotCommands.CancelMirror} {download.gid()}</code>"
                         else:
                             msg += f'\n<b>├ Source: </b><a href="https://t.me/c/{chatid}/{download.message.message_id}">{download.message.from_user.first_name}</a> | <b>Id :</b> <code>{download.message.from_user.id}</code>'
