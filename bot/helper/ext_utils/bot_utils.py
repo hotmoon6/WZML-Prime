@@ -41,8 +41,8 @@ class MirrorStatus:
         STATUS_CHECKING = "📝 CheckUp"
         STATUS_SEEDING = "🌱 Seed"
     else:
-        STATUS_UPLOADING = "Uploading in Progress"
-        STATUS_DOWNLOADING = "Downloading in Progress"
+        STATUS_UPLOADING = "Uploading ❗nProgress..."
+        STATUS_DOWNLOADING = "Downloading ❗nProgress..."
         STATUS_CLONING = "Cloning"
         STATUS_WAITING = "Queue"
         STATUS_PAUSED = "Pause"
@@ -168,7 +168,7 @@ def get_progress_bar_string(status):
 
 def get_readable_message():
     with download_dict_lock:
-        msg = f"<b><i>Bot of Mindflayer's Mirror</i></b>"
+        msg = f"<b><i><u>Bot of Mindflayer's Mirror</u></i></b>"
         if STATUS_LIMIT is not None:
             tasks = len(download_dict)
             global pages
@@ -177,8 +177,8 @@ def get_readable_message():
                 globals()['COUNT'] -= STATUS_LIMIT
                 globals()['PAGE_NO'] -= 1
         for index, download in enumerate(list(download_dict.values())[COUNT:], start=1):
-            msg += f"<b>╭ <a href='{download.message.link}'>{download.status()}</a>: </b>"
-            msg += f"<code>{escape(str(download.name()))}</code>"
+            msg += f"\n\n<b>╭ <a href='{download.message.link}'>{download.status()}</a> </b>"
+            msg += f"\n<code>{escape(str(download.name()))}</code>"
             if download.status() not in [MirrorStatus.STATUS_SEEDING, MirrorStatus.STATUS_SPLITTING]:
                 if EMOJI_THEME is True:
                     msg += f"\n<b>├</b>{get_progress_bar_string(download)} {download.progress()}"
@@ -210,10 +210,10 @@ def get_readable_message():
                     try:
                         chatid = str(download.message.chat.id)[4:]
                         if EMOJI_THEME is True:
-                            msg += f'\n<b>├🌐 Adder: </b><code>{download.message.from_user.first_name}</code> | <b>Id :</b> <code>{download.message.from_user.id}</code>'
+                            msg += f'\n<b>├👤 Adder: </b><code>{download.message.from_user.first_name}</code> | <b>Id :</b> <code>{download.message.from_user.id}</code>'
                             msg += f"\n<b>╰❌ </b><code>/{BotCommands.CancelMirror} {download.gid()}</code>"
                         else:
-                            msg += f'\n<b>├ Source: </b><a href="https://t.me/c/{chatid}/{download.message.message_id}">{download.message.from_user.first_name}</a> | <b>Id :</b> <code>{download.message.from_user.id}</code>'
+                            msg += f'\n<b>├ Adder: </b><code>{download.message.from_user.first_name}</code> | <b>Id :</b> <code>{download.message.from_user.id}</code>'
                             msg += f"\n<b>╰ </b><code>/{BotCommands.CancelMirror} {download.gid()}</code>"                 
                     except:
                         pass
