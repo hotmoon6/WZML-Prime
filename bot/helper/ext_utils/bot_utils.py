@@ -168,7 +168,7 @@ def get_progress_bar_string(status):
 
 def get_readable_message():
     with download_dict_lock:
-        msg = f"<b><i><u>Bᴏᴛ ᴏғ Mɪɴᴅғʟᴀʏᴇʀ's Mɪʀʀᴏʀ</u></i></b>\n\n\n"
+        msg = f"<b><i><u>Bᴏᴛ Oғ Mɪɴᴅғʟᴀʏᴇʀ'S Mɪʀʀᴏʀ</u></i></b>\n\n"
         if STATUS_LIMIT is not None:
             tasks = len(download_dict)
             global pages
@@ -210,10 +210,10 @@ def get_readable_message():
                     try:
                         chatid = str(download.message.chat.id)[4:]
                         if EMOJI_THEME is True:
-                            msg += f'\n<b>├👤 Adder: </b><code>{download.message.from_user.first_name}</code> | <b>Id :</b> <code>{download.message.from_user.id}</code>'
+                            msg += f'\n<b>├👤 Adder: </b><a href="https://t.me/c/{chatid}/{download.message.message_id}">{download.message.from_user.first_name}</a> | <b>Id :</b> <code>{download.message.from_user.id}</code>'
                             msg += f"\n<b>╰❌ </b><code>/{BotCommands.CancelMirror} {download.gid()}</code>"
                         else:
-                            msg += f'\n<b>├ Adder: </b><code>{download.message.from_user.first_name}</code> | <b>Id :</b> <code>{download.message.from_user.id}</code>'
+                            msg += f'\n<b>├ Adder: </b><a href="https://t.me/c/{chatid}/{download.message.message_id}">{download.message.from_user.first_name}</a> | <b>Id :</b> <code>{download.message.from_user.id}</code>'
                             msg += f"\n<b>╰ </b><code>/{BotCommands.CancelMirror} {download.gid()}</code>"                 
                     except:
                         pass
