@@ -169,7 +169,7 @@ def get_progress_bar_string(status):
 def get_readable_message():
     with download_dict_lock:
         msg = f"<b><i><u>Bᴏᴛ Of Mɪɴᴅfʟᴀʏᴇʀ'S Mɪʀʀᴏʀ</u></i></b>\n\n"
-        msg += f"<b><i>Active: </i></b><b><i>{user_task}/{tasks}<b><i>\n\n"
+        msg += f"<b><i>Active: </i></b><b><i>{tasks}/{tasks}<b><i>\n\n"
         if STATUS_LIMIT is not None:
             tasks = len(download_dict)
             global pages
