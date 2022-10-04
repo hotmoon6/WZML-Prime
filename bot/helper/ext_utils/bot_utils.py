@@ -41,8 +41,8 @@ class MirrorStatus:
         STATUS_CHECKING = "📝 CheckUp"
         STATUS_SEEDING = "🌱 Seed"
     else:
-        STATUS_UPLOADING = "Uploading ❗nProgress..."
-        STATUS_DOWNLOADING = "Downloading ❗nProgress..."
+        STATUS_UPLOADING = "Uploading...❗"
+        STATUS_DOWNLOADING = "Downloading...❗"
         STATUS_CLONING = "Cloning"
         STATUS_WAITING = "Queue"
         STATUS_PAUSED = "Pause"
@@ -168,7 +168,7 @@ def get_progress_bar_string(status):
 
 def get_readable_message():
     with download_dict_lock:
-        msg = f"<b><i><u>Bot of Mindflayer's Mirror</u></i></b>"
+        msg = f"<b><i><u>Bᴏᴛ ᴏғ Mɪɴᴅғʟᴀʏᴇʀ's Mɪʀʀᴏʀ</u></i></b>\n\n\n"
         if STATUS_LIMIT is not None:
             tasks = len(download_dict)
             global pages
@@ -177,8 +177,8 @@ def get_readable_message():
                 globals()['COUNT'] -= STATUS_LIMIT
                 globals()['PAGE_NO'] -= 1
         for index, download in enumerate(list(download_dict.values())[COUNT:], start=1):
-            msg += f"\n\n<b>╭ <a href='{download.message.link}'>{download.status()}</a> </b>"
-            msg += f"\n<code>{escape(str(download.name()))}</code>"
+            msg += f"<b>╭ <a href='{download.message.link}'>{download.status()}</a> </b>"
+            msg += f"<code>{escape(str(download.name()))}</code>"
             if download.status() not in [MirrorStatus.STATUS_SEEDING, MirrorStatus.STATUS_SPLITTING]:
                 if EMOJI_THEME is True:
                     msg += f"\n<b>├</b>{get_progress_bar_string(download)} {download.progress()}"
