@@ -210,7 +210,7 @@ def _clone(message, bot):
                     else:
                         cc = f'\n<b>╰ #Clone_By: </b>{tag}\n\n'
                     if PICS:
-                        sendPhoto(result + cc, bot, message, random.choice(PICS), button)
+                        sendMarkup(result + cc, bot, message, button)
                     else:
                         sendMarkup(result + cc, bot, message, button)
                 message.delete()
