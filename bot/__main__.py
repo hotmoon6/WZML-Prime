@@ -307,25 +307,27 @@ def log(update, context):
 help_string = '''
 Basic Commands :-
 
-NOTE: After the Command Leave a single Space
+<b>NOTE: After the Command Leave a single Space</b>
 
 /mirror2: [url] Start mirroring to Google Drive.
 
-/mirror2 https://yoururl.com
+<code>/mirror2 https://yoururl.com</code>
 
 or (Reply with URL)
 
 /qbmirror2: [magnet link] or Reply with Torrent - Start Mirroring to Google Drive using qBittorrent.
 
-/qbmirror2 magnet:?xt=urn:btih:f2cd08296a3...
+<code>/qbmirror2 magnet:?xt=urn:btih:f2cd08296a3...</code>
 
-or (Reply with Torrent)
+or (Reply with Torrent/Magnet)
 
 /clone2 [drive_url]: Copy Others file/folder to Google Drive.
 
-/clone2 https://drive.google.com/file/d/1e-fy8zXyz
+<code>/clone2 https://drive.google.com/file/d/1e-fy8zXyz</code>
 
-Complete Guide of Commands:-
+or (Reply with URL)
+
+<b>Complete Guide of Commands:-</b>
 '''
 
 help_string_telegraph_user = f'''
