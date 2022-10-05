@@ -15,6 +15,7 @@ from threading import Thread, Lock
 from dotenv import load_dotenv
 from pyrogram import Client, enums
 from asyncio import get_event_loop
+from megasdkrestclient import MegaSdkRestClient, errors as mega_err
 
 main_loop = get_event_loop()
 
@@ -30,10 +31,35 @@ basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
 
 LOGGER = getLogger(__name__)
 
-
-
 def getConfig(name: str):
     return environ[name]
+
+CONFIG_FILE_URL = environ.get('CONFIG_FILE_URL')
+
+try:
+    if len(CONFIG_FILE_URL) == 0:
+        raise TypeError
+    try:
+        res = rget(CONFIG_FILE_URL)
+        if res.status_code == 200:
+            with open('config.env', 'wb+') as f:
+                f.write(res.content)
+            log_info("Succesfully got config.env from CONFIG_FILE_URL")
+        else:
+            log_error(f"Failed to download config.env {res.status_code}")
+    except Exception as e:
+        log_error(f"CONFIG_FILE_URL: {e}")
+except:
+    pass
+
+try:
+    HEROKU_API_KEY = getConfig('HEROKU_API_KEY')
+    HEROKU_APP_NAME = getConfig('HEROKU_APP_NAME')
+    if len(HEROKU_API_KEY) == 0 or len(HEROKU_APP_NAME) == 0:
+        raise KeyError
+except:
+    HEROKU_APP_NAME = None
+    HEROKU_API_KEY = None
 
 PRE_DICT = {}
 CAP_DICT = {}
@@ -57,21 +83,29 @@ try:
         log_error(f"NETRC_URL: {e}")
 except:
     pass
-try:
-    SERVER_PORT = getConfig('SERVER_PORT')
-    if len(SERVER_PORT) == 0:
-        raise KeyError
-except:
-    SERVER_PORT = 80
 
-Popen(f"gunicorn web.wserver:app --bind 0.0.0.0:{SERVER_PORT}", shell=True)
-srun(["qbittorrent-nox", "-d", "--profile=."])
+try:
+    TORRENT_TIMEOUT = getConfig('TORRENT_TIMEOUT')
+    if len(TORRENT_TIMEOUT) == 0:
+        raise KeyError
+    TORRENT_TIMEOUT = int(TORRENT_TIMEOUT)
+except:
+    TORRENT_TIMEOUT = None
+
+PORT = environ.get('PORT')
+Popen(f"gunicorn web.wserver:app --bind 0.0.0.0:{PORT}", shell=True)
+srun(["firefox", "-d", "--profile=."])
 if not ospath.exists('.netrc'):
     srun(["touch", ".netrc"])
 srun(["cp", ".netrc", "/root/.netrc"])
 srun(["chmod", "600", ".netrc"])
-srun(["chmod", "+x", "aria.sh"])
-srun("./aria.sh", shell=True)
+trackers = check_output("curl -Ns https://raw.githubusercontent.com/XIU2/TrackersListCollection/master/all.txt https://ngosang.github.io/trackerslist/trackers_all_http.txt https://newtrackon.com/api/all https://raw.githubusercontent.com/hezhijie0327/Trackerslist/main/trackerslist_tracker.txt | awk '$0' | tr '\n\n' ','", shell=True).decode('utf-8').rstrip(',')
+with open("a2c.conf", "a+") as a:
+    if TORRENT_TIMEOUT is not None:
+        a.write(f"bt-stop-timeout={TORRENT_TIMEOUT}\n")
+    a.write(f"bt-tracker=[{trackers}]")
+srun(["chrome", "--conf-path=/usr/src/app/a2c.conf"])
+alive = Popen(["python3", "alive.py"])
 sleep(0.5)
 
 Interval = []
@@ -122,6 +156,7 @@ LEECH_LOG = set()
 MIRROR_LOGS = set()
 LINK_LOGS = set()
 LOG_LEECH = set()
+
 
 try:
     BOT_TOKEN = getConfig('BOT_TOKEN')
@@ -196,14 +231,17 @@ try:
         LINK_LOGS.add(int(_id))
 except:
     pass
-
 try:
     AUTO_DELETE_UPLOAD_MESSAGE_DURATION = int(getConfig('AUTO_DELETE_UPLOAD_MESSAGE_DURATION'))
 except KeyError as e:
     AUTO_DELETE_UPLOAD_MESSAGE_DURATION = -1
     LOGGER.warning("AUTO_DELETE_UPLOAD_MESSAGE_DURATION var missing!")
     pass
-
+try:
+    TIME_GAP = int(getConfig('TIME_GAP'))
+except KeyError as e:
+    TIME_GAP = -1
+    pass
 LOGGER.info("Generating SESSION_STRING")
 app = Client(name='pyrogram', api_id=int(TELEGRAM_API), api_hash=TELEGRAM_HASH, bot_token=BOT_TOKEN, parse_mode=enums.ParseMode.HTML, no_updates=True)
 
@@ -221,33 +259,48 @@ def aria2c_init():
     except Exception as e:
         log_error(f"Aria2c initializing error: {e}")
 Thread(target=aria2c_init).start()
-sleep(1.5)
 
 try:
-    MEGA_API_KEY = getConfig('MEGA_API_KEY')
-    if len(MEGA_API_KEY) == 0:
+    MEGA_KEY = getConfig('MEGA_API_KEY')
+    if len(MEGA_KEY) == 0:
         raise KeyError
 except:
-    log_warning('MEGA API KEY not provided!')
-    MEGA_API_KEY = None
-try:
-    MEGA_EMAIL_ID = getConfig('MEGA_EMAIL_ID')
-    MEGA_PASSWORD = getConfig('MEGA_PASSWORD')
-    if len(MEGA_EMAIL_ID) == 0 or len(MEGA_PASSWORD) == 0:
-        raise KeyError
-except:
-    log_warning('MEGA Credentials not provided!')
-    MEGA_EMAIL_ID = None
-    MEGA_PASSWORD = None
+    MEGA_KEY = None
+    LOGGER.info('MEGA_API_KEY not provided!')
+if MEGA_KEY is not None:
+    # Start megasdkrest binary
+    Popen(["megasdkrest", "--apikey", MEGA_KEY])
+    sleep(3)  # Wait for the mega server to start listening
+    mega_client = MegaSdkRestClient('http://localhost:6090')
+    try:
+        MEGA_USERNAME = getConfig('MEGA_EMAIL_ID')
+        MEGA_PASSWORD = getConfig('MEGA_PASSWORD')
+        if len(MEGA_USERNAME) > 0 and len(MEGA_PASSWORD) > 0:
+            try:
+                mega_client.login(MEGA_USERNAME, MEGA_PASSWORD)
+            except mega_err.MegaSdkRestClientException as e:
+                log_error(e.message['message'])
+                exit(0)
+        else:
+            log_info("Mega API KEY provided but credentials not provided. Starting mega in anonymous mode!")
+    except:
+        log_info("Mega API KEY provided but credentials not provided. Starting mega in anonymous mode!")
+else:
+    sleep(1.5)
 
+try:
+    BASE_URL = getConfig('BASE_URL_OF_BOT').rstrip("/")
+    if len(BASE_URL) == 0:
+        raise KeyError
+except:
+    log_warning('BASE_URL_OF_BOT not provided!')
+    BASE_URL = None
 try:
     DB_URI = getConfig('DATABASE_URL')
     if len(DB_URI) == 0:
         raise KeyError
 except:
     DB_URI = None
-
-
 tgBotMaxFileSize = 2097151000
 try:
     TG_SPLIT_SIZE = getConfig('TG_SPLIT_SIZE')
@@ -282,7 +335,6 @@ except:
     USER_SESSION_STRING = None
     premium_session = None
 LOGGER.info(f"TG_SPLIT_SIZE: {TG_SPLIT_SIZE}")
-
 try:
     STATUS_LIMIT = getConfig('STATUS_LIMIT')
     if len(STATUS_LIMIT) == 0:
@@ -318,6 +370,17 @@ try:
 except:
     SEARCH_LIMIT = 0
 try:
+    PAID_SERVICE = getConfig('PAID_SERVICE')
+    PAID_SERVICE = PAID_SERVICE.lower() == 'true'
+except KeyError:
+    PAID_SERVICE = False
+try:
+    RSS_COMMAND = getConfig('RSS_COMMAND')
+    if len(RSS_COMMAND) == 0:
+        raise KeyError
+except:
+    RSS_COMMAND = None
+try:
     CMD_INDEX = getConfig('CMD_INDEX')
     if len(CMD_INDEX) == 0:
         raise KeyError
@@ -328,13 +391,6 @@ try:
     SHOW_LIMITS_IN_STATS = SHOW_LIMITS_IN_STATS.lower() == 'true'
 except KeyError:
     SHOW_LIMITS_IN_STATS = False
-try:
-    TORRENT_TIMEOUT = getConfig('TORRENT_TIMEOUT')
-    if len(TORRENT_TIMEOUT) == 0:
-        raise KeyError
-    TORRENT_TIMEOUT = int(TORRENT_TIMEOUT)
-except:
-    TORRENT_TIMEOUT = None
 try:
     TORRENT_DIRECT_LIMIT = getConfig('TORRENT_DIRECT_LIMIT')
     if len(TORRENT_DIRECT_LIMIT) == 0:
@@ -392,32 +448,15 @@ try:
 except:
     ZIP_UNZIP_LIMIT = None
 try:
-    TIME_GAP = getConfig('TIME_GAP')
-    if len(TIME_GAP) == 0:
-        raise KeyError
-    TIME_GAP = int(TIME_GAP)
-except:
-    TIME_GAP = 600
-try:
-    PAID_SERVICE = getConfig('PAID_SERVICE')
-    PAID_SERVICE = PAID_SERVICE.lower() == 'true'
-except KeyError:
-    PAID_SERVICE = False
-
-
-try:
-    RSS_COMMAND = getConfig('RSS_COMMAND')
-    if len(RSS_COMMAND) == 0:
-        raise KeyError
-except:
-    RSS_COMMAND = None
-try:
     RSS_CHAT_ID = getConfig('RSS_CHAT_ID')
     if len(RSS_CHAT_ID) == 0:
         raise KeyError
     RSS_CHAT_ID = int(RSS_CHAT_ID)
 except:
     RSS_CHAT_ID = None
+
+
+
 try:
     RSS_USER_SESSION_STRING = getConfig('RSS_USER_SESSION_STRING')
     if len(RSS_USER_SESSION_STRING) == 0:
@@ -433,25 +472,6 @@ try:
     RSS_DELAY = int(RSS_DELAY)
 except:
     RSS_DELAY = 900
-
-
-try:
-    START_BTN1_NAME = getConfig('START_BTN1_NAME')
-    START_BTN1_URL = getConfig('START_BTN1_URL')
-    if len(START_BTN1_NAME) == 0 or len(START_BTN1_URL) == 0:
-        raise KeyError
-except:
-    START_BTN1_NAME = 'Master'
-    START_BTN1_URL = 'https://t.me/krn_adhikari'
-
-try:
-    START_BTN2_NAME = getConfig('START_BTN2_NAME')
-    START_BTN2_URL = getConfig('START_BTN2_URL')
-    if len(START_BTN2_NAME) == 0 or len(START_BTN2_URL) == 0:
-        raise KeyError
-except:
-    START_BTN2_NAME = 'Support Group'
-    START_BTN2_URL = 'https://t.me/WeebZone_updates'
 try:
     BUTTON_FOUR_NAME = getConfig('BUTTON_FOUR_NAME')
     BUTTON_FOUR_URL = getConfig('BUTTON_FOUR_URL')
@@ -524,14 +544,6 @@ try:
     IGNORE_PENDING_REQUESTS = IGNORE_PENDING_REQUESTS.lower() == 'true'
 except:
     IGNORE_PENDING_REQUESTS = False
-try:
-    BASE_URL = getConfig('BASE_URL_OF_BOT').rstrip("/")
-    if len(BASE_URL) == 0:
-        raise KeyError
-except:
-    log_warning('BASE_URL_OF_BOT not provided!')
-    BASE_URL = None
-
 try:
     AS_DOCUMENT = getConfig('AS_DOCUMENT')
     AS_DOCUMENT = AS_DOCUMENT.lower() == 'true'
@@ -658,26 +670,19 @@ try:
     LEECH_LOG_INDEXING = LEECH_LOG_INDEXING.lower() == 'true'	
 except KeyError:	
     LEECH_LOG_INDEXING = False
-
 try:
     AUTHOR_NAME = getConfig('AUTHOR_NAME')
     if len(AUTHOR_NAME) == 0:
-        AUTHOR_NAME = 'Millie'
+        AUTHOR_NAME = 'Karan'
 except KeyError:
-    AUTHOR_NAME = 'Millie'
+    AUTHOR_NAME = 'Karan'
+
 try:
     AUTHOR_URL = getConfig('AUTHOR_URL')
     if len(AUTHOR_URL) == 0:
         AUTHOR_URL = 'https://t.me/WeebZone_updates'
 except KeyError:
     AUTHOR_URL = 'https://t.me/WeebZone_updates'
-try:
-    TITLE_NAME = getConfig('TITLE_NAME')
-    if len(TITLE_NAME) == 0:
-        TITLE_NAME = 'WeebZone'
-except KeyError:
-    TITLE_NAME = 'WeebZone'
-
 try:
     GD_INFO = getConfig('GD_INFO')
     if len(GD_INFO) == 0:
@@ -689,8 +694,29 @@ try:
     DISABLE_DRIVE_LINK = DISABLE_DRIVE_LINK.lower() == 'true'
 except KeyError:
     DISABLE_DRIVE_LINK = False
+try:
+    TITLE_NAME = getConfig('TITLE_NAME')
+    if len(TITLE_NAME) == 0:
+        TITLE_NAME = 'WeebZone'
+except KeyError:
+    TITLE_NAME = 'WeebZone'
+try:
+    START_BTN1_NAME = getConfig('START_BTN1_NAME')
+    START_BTN1_URL = getConfig('START_BTN1_URL')
+    if len(START_BTN1_NAME) == 0 or len(START_BTN1_URL) == 0:
+        raise KeyError
+except:
+    START_BTN1_NAME = 'Master'
+    START_BTN1_URL = 'https://t.me/krn_adhikari'
 
-
+try:
+    START_BTN2_NAME = getConfig('START_BTN2_NAME')
+    START_BTN2_URL = getConfig('START_BTN2_URL')
+    if len(START_BTN2_NAME) == 0 or len(START_BTN2_URL) == 0:
+        raise KeyError
+except:
+    START_BTN2_NAME = 'Support Group'
+    START_BTN2_URL = 'https://t.me/WeebZone_updates'
 try:
     CREDIT_NAME = getConfig('CREDIT_NAME')
     if len(CREDIT_NAME) == 0:
@@ -709,7 +735,6 @@ try:
         CAPTION_FONT = 'code'
 except KeyError:
     CAPTION_FONT = 'code'
-
 try:
     FINISHED_PROGRESS_STR = getConfig('FINISHED_PROGRESS_STR') 
     UN_FINISHED_PROGRESS_STR = getConfig('UN_FINISHED_PROGRESS_STR')
