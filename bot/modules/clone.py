@@ -201,7 +201,7 @@ def _clone(message, bot):
                     botstart = f"http://t.me/{b_uname}"
                     buttons.buildbutton("View links in PM", f"{botstart}")
                     if PICS:
-                        sendPhoto(msg + botpm, bot, message, random.choice(PICS), buttons.build_menu(2))
+                        sendMarkup(msg + botpm, bot, message, buttons.build_menu(2))
                     else:
                         sendMarkup(msg + botpm, bot, message, buttons.build_menu(2))
                 else:
@@ -245,7 +245,7 @@ def _clone(message, bot):
                             botstart = f"http://t.me/{b_uname}"
                             buttons.buildbutton("View links in PM", f"{botstart}")
                             if PICS:
-                                sendPhoto(msg + botpm, bot, message, random.choice(PICS), buttons.build_menu(2))
+                                sendMarkup(msg + botpm, bot, message, buttons.build_menu(2))
                             else:
                                 sendMarkup(msg + botpm, bot, message, buttons.build_menu(2))
                         else:
@@ -254,7 +254,7 @@ def _clone(message, bot):
                             else:
                                 cc = f'\n<b>╰ #Clone_By: </b>{tag}\n\n'
                             if PICS:
-                                sendPhoto(result + cc, bot, message, random.choice(PICS), button)
+                                sendMarkup(result + cc, bot, message, button)
                             else:
                                 sendMarkup(result + cc, bot, message, button)       
                         message.delete()
@@ -309,7 +309,7 @@ def _clone(message, bot):
             LOGGER.info(f'Cloning Done: {name}')
             if FORCE_BOT_PM is False:
                 if PICS:
-                    msg = sendPhoto(result + cc + pmwarn + logwarn + warnmsg, bot, message, random.choice(PICS), button)
+                    msg = sendMarkup(result + cc + pmwarn + logwarn + warnmsg, bot, message, button)
                 else:
                     msg = sendMarkup(result + cc + pmwarn + logwarn + warnmsg, bot, message, button)
                 Thread(target=auto_delete_upload_message, args=(bot, message, msg)).start()
