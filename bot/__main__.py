@@ -16,7 +16,7 @@ import requests
 import pytz
 from bot import bot, dispatcher, updater, botStartTime, TIMEZONE, IGNORE_PENDING_REQUESTS, LOGGER, Interval, INCOMPLETE_TASK_NOTIFIER, \
                     DB_URI, alive, app, main_loop, HEROKU_API_KEY, HEROKU_APP_NAME, SET_BOT_COMMANDS, AUTHORIZED_CHATS, EMOJI_THEME, \
-                    START_BTN1_NAME, START_BTN1_URL, START_BTN2_NAME, START_BTN2_URL, CREDIT_NAME, TITLE_NAME, PICS, FINISHED_PROGRESS_STR, UN_FINISHED_PROGRESS_STR, \
+                    START_BTN1_NAME, START_BTN1_URL, START_BTN2_NAME, START_BTN2_URL, BOT_NAME, CREDIT_NAME, TITLE_NAME, PICS, FINISHED_PROGRESS_STR, UN_FINISHED_PROGRESS_STR, \
                     SHOW_LIMITS_IN_STATS, LEECH_LIMIT, TORRENT_DIRECT_LIMIT, CLONE_LIMIT, MEGA_LIMIT, ZIP_UNZIP_LIMIT, TOTAL_TASKS_LIMIT, USER_TASKS_LIMIT, \
                     PIXABAY_API_KEY, PIXABAY_CATEGORY, PIXABAY_SEARCH, WALLCRAFT_CATEGORY, WALLTIP_SEARCH, WALLFLARE_SEARCH
 from .helper.ext_utils.fs_utils import start_cleanup, clean_all, exit_clean_up
@@ -225,7 +225,7 @@ def stats(update, context):
 
 def start(update, context):
     if CustomFilters.authorized_user(update) or CustomFilters.authorized_chat(update):
-        start_string = f'''<b>My Name is Millie Bobby Brown! An Advanced Mirror Bot to Leech Torrent and Direct Links...
+        start_string = f'''<b>My Name is {BOT_NAME}! An Advanced Mirror Bot to Leech Torrent and Direct Links...
 Tap /{BotCommands.HelpCommand} to get a list of available commands
 
 © Spidey | Mindflayer's Mirror</b>
