@@ -8,7 +8,7 @@ from requests import head as rhead
 from urllib.request import urlopen
 
 from bot.helper.telegram_helper.bot_commands import BotCommands
-from bot import FINISHED_PROGRESS_STR, UN_FINISHED_PROGRESS_STR, download_dict, download_dict_lock, STATUS_LIMIT, botStartTime, DOWNLOAD_DIR, WEB_PINCODE, BASE_URL, EMOJI_THEME, TOTAL_TASKS_LIMIT, USER_TASKS_LIMIT, LEECH_LIMIT, MEGA_LIMIT, CREDIT_NAME, TORRENT_DIRECT_LIMIT, ZIP_UNZIP_LIMIT
+from bot import FINISHED_PROGRESS_STR, UN_FINISHED_PROGRESS_STR, download_dict, download_dict_lock, STATUS_LIMIT, botStartTime, DOWNLOAD_DIR, WEB_PINCODE, BASE_URL, EMOJI_THEME, TOTAL_TASKS_LIMIT, USER_TASKS_LIMIT, LEECH_LIMIT, MEGA_LIMIT, BOT_NAME, CREDIT_NAME, TORRENT_DIRECT_LIMIT, ZIP_UNZIP_LIMIT
 from bot.helper.telegram_helper.button_build import ButtonMaker
 
 import shutil
