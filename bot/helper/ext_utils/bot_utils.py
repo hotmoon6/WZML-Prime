@@ -41,8 +41,8 @@ class MirrorStatus:
         STATUS_CHECKING = "📝 CheckUp"
         STATUS_SEEDING = "🌱 Seed"
     else:
-        STATUS_UPLOADING = "Uploading:- "
-        STATUS_DOWNLOADING = "Downloading:- "
+        STATUS_UPLOADING = "Uploading"
+        STATUS_DOWNLOADING = "Downloading"
         STATUS_CLONING = "Cloning"
         STATUS_WAITING = "Queue"
         STATUS_PAUSED = "Pause"
@@ -177,7 +177,7 @@ def get_readable_message():
                 globals()['COUNT'] -= STATUS_LIMIT
                 globals()['PAGE_NO'] -= 1
         for index, download in enumerate(list(download_dict.values())[COUNT:], start=1):
-            msg += f"<b>╭{download.status()}</b>"
+            msg += f"<b>╭ {download.status()}:- </b>"
             msg += f"<code>{escape(str(download.name()))}</code>"
             if download.status() not in [MirrorStatus.STATUS_SEEDING, MirrorStatus.STATUS_SPLITTING]:
                 if EMOJI_THEME is True:
