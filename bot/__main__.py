@@ -235,7 +235,10 @@ Tap /{BotCommands.HelpCommand} to get a list of available commands
         else:
             sendMessage(start_string, context.bot, update.message)
     else:
-        text = f"<b>It is an Official Bot of Mindflayer's Mirror. You can get Access only within the Group!</b>"
+        text = f"<b>It is an Official Bot of Mindflayer's Mirror. You can get Access only within the Group!</b>
+
+<b>NOTE:</b> <code>All The Uploaded Links And Files Will Be Sent Here In Your Private Chat</code>
+"
         if PICS:
             sendPhoto(text, context.bot, update.message, random.choice(PICS))
         else:
