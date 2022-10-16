@@ -165,9 +165,9 @@ def stats(update, context):
                     f'<b>├ 🛠 Updated On: </b>{last_commit}\n'\
                     f'<b>├ ⌛ Uptime: </b>{currentTime}\n'\
                     f'<b>├ 🟢 OS Uptime: </b>{osUptime}\n'\
-                    f'<b>├ 🖥️ CPU:</b> [{progress_bar(cpuUsage)}] {cpuUsage}%\n'\
+                    f'<b>├ 🖥️ CPU:</b>  [{progress_bar(cpuUsage)}] {cpuUsage}%\n'\
                     f'<b>├ 🎮 RAM:</b> [{progress_bar(mem_p)}] {mem_p}%\n'\
-                    f'<b>├ 💾 SSD:</b> [{progress_bar(disk)}] {disk}%\n'\
+                    f'<b>├ 💾 SSD:</b>  [{progress_bar(disk)}] {disk}%\n'\
                     f'<b>├ 💿 Disk Free:</b> {free}\n'\
                     f'<b>├ 🔺 Upload Data:</b> {sent}\n'\
                     f'<b>╰ 🔻 Download Data:</b> {recv}\n\n'
@@ -177,9 +177,9 @@ def stats(update, context):
                     f'<b>├  Updated On: </b>{last_commit}\n'\
                     f'<b>├  Uptime: </b>{currentTime}\n'\
                     f'<b>├  OS Uptime: </b>{osUptime}\n'\
-                    f'<b>├  CPU:</b> [{progress_bar(cpuUsage)}] {cpuUsage}%\n'\
+                    f'<b>├  CPU:</b>  [{progress_bar(cpuUsage)}] {cpuUsage}%\n'\
                     f'<b>├  RAM:</b> [{progress_bar(mem_p)}] {mem_p}%\n'\
-                    f'<b>├  SSD:</b> [{progress_bar(disk)}] {disk}%\n'\
+                    f'<b>├  SSD:</b>  [{progress_bar(disk)}] {disk}%\n'\
                     f'<b>├  Disk Free:</b> {free}\n'\
                     f'<b>├  Upload Data:</b> {sent}\n'\
                     f'<b>╰  Download Data:</b> {recv}\n\n'
