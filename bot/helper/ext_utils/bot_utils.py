@@ -177,11 +177,11 @@ def get_readable_message():
                 globals()['COUNT'] -= STATUS_LIMIT
                 globals()['PAGE_NO'] -= 1
         for index, download in enumerate(list(download_dict.values())[COUNT:], start=1):
-            msg += f"<b>╭ {download.status()}:- </b>"
+            msg += f"<b>{download.status()}:- </b>"
             msg += f"<code>{escape(str(download.name()))}</code>"
             if download.status() not in [MirrorStatus.STATUS_SEEDING, MirrorStatus.STATUS_SPLITTING]:
                 if EMOJI_THEME is True:
-                    msg += f"\n<b>├</b> {get_progress_bar_string(download)}{download.progress()}"
+                    msg += f"\n<b>╭</b> {get_progress_bar_string(download)}{download.progress()}"
                     msg += f"\n<b>├🔄 Process:</b> {get_readable_file_size(download.processed_bytes())} of {download.size()}"
                     msg += f"\n<b>├⚡ Speed:</b> {download.speed()}"
                     msg += f"\n<b>├⏳ ETA:</b> {download.eta()}"
@@ -189,7 +189,7 @@ def get_readable_message():
                     msg += f"\n<b>├⛓️ Engine :</b> {download.eng()}"
 
                 else:
-                    msg += f"\n<b>├</b> {get_progress_bar_string(download)}{download.progress()}"
+                    msg += f"\n<b>╭</b> {get_progress_bar_string(download)}{download.progress()}"
                     msg += f"\n<b>├ Process:</b> {get_readable_file_size(download.processed_bytes())} of {download.size()}"
                     msg += f"\n<b>├ Speed:</b> {download.speed()}"
                     msg += f"\n<b>├ ETA:</b> {download.eta()}"
