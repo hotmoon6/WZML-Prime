@@ -30,27 +30,27 @@ PAGES = 0
 
 class MirrorStatus:
     if EMOJI_THEME is True:
-        STATUS_UPLOADING = "🔺 Uploading"
-        STATUS_DOWNLOADING = "🔻 Downloading"
-        STATUS_CLONING = "♻️ Clone"
-        STATUS_WAITING = "💤 Queue"
-        STATUS_PAUSED = "⛔️ Pause"
-        STATUS_ARCHIVING = "🔐 Archive"
-        STATUS_EXTRACTING = "📂 Extract"
-        STATUS_SPLITTING = "✂️ Split"
-        STATUS_CHECKING = "📝 CheckUp"
-        STATUS_SEEDING = "🌱 Seed"
+        STATUS_UPLOADING = "🔺 Uᴘʟᴏᴀᴅɪɴɢ"
+        STATUS_DOWNLOADING = "🔻 Dᴏᴡɴʟᴏᴀᴅɪɴɢ"
+        STATUS_CLONING = "♻️ Cʟᴏɴɪɴɢ"
+        STATUS_WAITING = "💤 Qᴜᴇᴜᴇ"
+        STATUS_PAUSED = "⛔️ Pᴀᴜsᴇᴅ"
+        STATUS_ARCHIVING = "🔐 Aʀᴄʜɪᴠɪɴɢ"
+        STATUS_EXTRACTING = "📂 Exᴛʀᴀᴄᴛɪɴɢ"
+        STATUS_SPLITTING = "✂️ Sᴘʟɪᴛᴛɪɴɢ"
+        STATUS_CHECKING = "📝 CʜᴇᴄᴋUᴘ"
+        STATUS_SEEDING = "🌱 Sᴇᴇᴅɪɴɢ"
     else:
-        STATUS_UPLOADING = "Uploading"
-        STATUS_DOWNLOADING = "Downloading"
-        STATUS_CLONING = "Cloning"
-        STATUS_WAITING = "Queue"
-        STATUS_PAUSED = "Pause"
-        STATUS_ARCHIVING = "Archive"
-        STATUS_EXTRACTING = "Extracting"
-        STATUS_SPLITTING = "Splitting"
-        STATUS_CHECKING = "CheckUp"
-        STATUS_SEEDING = "Seeding"
+        STATUS_UPLOADING = "Uᴘʟᴏᴀᴅɪɴɢ"
+        STATUS_DOWNLOADING = "Dᴏᴡɴʟᴏᴀᴅɪɴɢ"
+        STATUS_CLONING = "Cʟᴏɴɪɴɢ"
+        STATUS_WAITING = "Qᴜᴇᴜᴇ"
+        STATUS_PAUSED = "Pᴀᴜsᴇᴅ"
+        STATUS_ARCHIVING = "Aʀᴄʜɪᴠɪɴɢ"
+        STATUS_EXTRACTING = "Exᴛʀᴀᴄᴛɪɴɢ"
+        STATUS_SPLITTING = "Sᴘʟɪᴛᴛɪɴɢ"
+        STATUS_CHECKING = "CʜᴇᴄᴋUᴘ"
+        STATUS_SEEDING = "Sᴇᴇᴅɪɴɢ"
 
 class EngineStatus:
     STATUS_ARIA = "Aria2c📶"
@@ -459,7 +459,7 @@ DL : {num_active} | UP : {num_upload} | SPLIT : {num_split}
 ZIP : {num_archi} | UNZIP : {num_extract} | TOTAL : {tasks}
 Limits : T/D : {TORRENT_DIRECT_LIMIT}GB | Z/U : {ZIP_UNZIP_LIMIT}GB
                     L : {LEECH_LIMIT}GB | M : {MEGA_LIMIT}GB
-Made with ❤️ by {CREDIT_NAME}
+© {CREDIT_NAME} | Mindflayer's Mirror
 """
     return stats
 dispatcher.add_handler(
