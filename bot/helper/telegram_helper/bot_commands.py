@@ -1,6 +1,6 @@
 from bot import CMD_INDEX
 import os
-def getCommand(name: str, command: str):
+def getCommand(name: str, command: str, command: str):
     try:
         if len(os.environ[name]) == 0:
             raise KeyError
