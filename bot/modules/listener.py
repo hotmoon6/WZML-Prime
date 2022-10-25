@@ -483,7 +483,7 @@ class MirrorLeechListener:
             if DISABLE_DRIVE_LINK is True and self.message.chat.type != 'private':
                 pass
             else:
-                buttons.buildbutton("☁️ Drive Link", link)
+                buttons.buildbutton("☁️ Dʀɪᴠᴇ Lɪɴᴋ", link)
             LOGGER.info(f'Done Uploading {name}')
             if INDEX_URL is not None:
                 url_path = rutils.quote(f'{name}')
@@ -491,14 +491,14 @@ class MirrorLeechListener:
                 if typ == "Folder":
                     share_url += '/'
                     share_url = short_url(share_url)
-                    buttons.buildbutton("⚡ Index Link", share_url)
+                    buttons.buildbutton("⚡ Iɴᴅᴇx Lɪɴᴋ", share_url)
                 else:
                     share_url = short_url(share_url)
-                    buttons.buildbutton("⚡ Index Link", share_url)
+                    buttons.buildbutton("⚡ Iɴᴅᴇx Lɪɴᴋ", share_url)
                     if VIEW_LINK:
                         share_urls = f'{INDEX_URL}/{url_path}?a=view'
                         share_urls = short_url(share_urls)
-                        buttons.buildbutton("🌐 View Link", share_urls)
+                        buttons.buildbutton("💾 Sᴛʀᴇᴀᴍɪɴɢ Lɪɴᴋ", share_urls)
                     if SOURCE_LINK is True:
                         try:
                             mesg = message_args[1]
@@ -507,13 +507,13 @@ class MirrorLeechListener:
                                     title=f"{TITLE_NAME} Source Link",
                                     content=mesg,
                                 )["path"]
-                                buttons.buildbutton(f"🔗 Source Link", f"https://graph.org/{link}")
+                                buttons.buildbutton(f"🔗 Sᴏᴜʀᴄᴇ Lɪɴᴋ", f"https://graph.org/{link}")
                             elif is_url(mesg):
                                 source_link = mesg
                                 if source_link.startswith(("|", "pswd: ")):
                                     pass
                                 else:
-                                    buttons.buildbutton(f"🔗 Source Link", source_link)
+                                    buttons.buildbutton(f"🔗 Sᴏᴜʀᴄᴇ Lɪɴᴋ", source_link)
                             else:
                                 pass
                         except Exception:
@@ -528,9 +528,9 @@ class MirrorLeechListener:
                                             title=f"{TITLE_NAME} Source Link",
                                             content=source_link,
                                         )["path"]
-                                        buttons.buildbutton(f"🔗 Source Link", f"https://graph.org/{link}")
+                                        buttons.buildbutton(f"🔗 Sᴏᴜʀᴄᴇ Lɪɴᴋ", f"https://graph.org/{link}")
                                     else:
-                                        buttons.buildbutton(f"🔗 Source Link", source_link)
+                                        buttons.buildbutton(f"🔗 Sᴏᴜʀᴄᴇ Lɪɴᴋ", source_link)
                             except Exception:
                                 pass
                     else:
