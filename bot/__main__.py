@@ -152,13 +152,13 @@ def start(update, context):
 Type /{BotCommands.HelpCommand} to get a list of available commands
 '''
         if PICS:
-            sendPhoto(start_string, context.bot, update.message, random.choice(PICS))
+            sendPhoto(start_string, context.bot, update.message, random.choice(PICS), reply_markup)
         else:
             sendMarkup(start_string, context.bot, update.message, reply_markup)
     else:
         text = f"Not Authorized user, deploy your own mirror bot"
         if PICS:
-            sendPhoto(text, context.bot, update.message, random.choice(PICS))
+            sendPhoto(text, context.bot, update.message, random.choice(PICS), reply_markup)
         else:
             sendMarkup(text, context.bot, update.message, reply_markup)
 
