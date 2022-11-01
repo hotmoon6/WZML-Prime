@@ -53,15 +53,15 @@ class MirrorStatus:
         STATUS_SEEDING = "Sᴇᴇᴅɪɴɢ"
 
 class EngineStatus:
-    STATUS_ARIA = "Aria2c📶"
-    STATUS_GD = "Google Api♻️"
-    STATUS_MEGA = "MegaSDK⭕️"
-    STATUS_QB = "qBittorrent🦠"
-    STATUS_TG = "Pyrogram💥"
-    STATUS_YT = "YT-dlp🌟"
-    STATUS_EXT = "Extract | pExtract⚔️"
-    STATUS_SPLIT = "FFmpeg✂️"
-    STATUS_ZIP = "p7zip🛠"
+    STATUS_ARIA = "Aria2c"
+    STATUS_GD = "Google Cloud"
+    STATUS_MEGA = "MegaSDK"
+    STATUS_QB = "qBittorrent"
+    STATUS_TG = "Pyrogram"
+    STATUS_YT = "YT-dlp"
+    STATUS_EXT = "pExtract"
+    STATUS_SPLIT = "FFmpeg"
+    STATUS_ZIP = "p7zip"
 
     
 SIZE_UNITS = ['B', 'KB', 'MB', 'GB', 'TB', 'PB']
@@ -177,11 +177,11 @@ def get_readable_message():
                 globals()['COUNT'] -= STATUS_LIMIT
                 globals()['PAGE_NO'] -= 1
         for index, download in enumerate(list(download_dict.values())[COUNT:], start=1):
-            msg += f"<b>{download.status()}: </b>"
-            msg += f"<code>{escape(str(download.name()))}</code>"
+            msg += f"<b>╭</b><code>{escape(str(download.name()))}</code>"
+            msg += f"<b>├{download.status()}</b>"
             if download.status() not in [MirrorStatus.STATUS_SEEDING, MirrorStatus.STATUS_SPLITTING]:
                 if EMOJI_THEME is True:
-                    msg += f"\n<b>╭</b> {get_progress_bar_string(download)} {download.progress()}"
+                    msg += f"\n<b>├</b> {get_progress_bar_string(download)}  {download.progress()}"
                     msg += f"\n<b>├🔄 Process:</b> {get_readable_file_size(download.processed_bytes())} of {download.size()}"
                     msg += f"\n<b>├⚡ Speed:</b> {download.speed()}"
                     msg += f"\n<b>├⏳ ETA:</b> {download.eta()}"
