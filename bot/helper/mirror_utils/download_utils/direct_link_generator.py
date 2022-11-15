@@ -84,6 +84,8 @@ def direct_link_generator(link: str):
         return udrive(link)
     elif any(x in link for x in fmed_list):
         return fembed(link)
+    elif any(x in link for x in ['suzihaza.com', 'vanfem.com', 'javpoll.com']):
+        return lowfembed(link)
     elif any(x in link for x in ['sbembed.com', 'watchsb.com', 'streamsb.net', 'sbplay.org']):
         return sbembed(link)
     else:
@@ -245,6 +247,15 @@ def fembed(link: str) -> str:
     count = len(dl_url)
     lst_link = [dl_url[i] for i in dl_url]
     return lst_link[count-1]
+
+def lowfembed(link: str) -> str:
+    """ Fembed direct link generator for 480p
+    Based on https://github.com/zevtyardt/lk21
+    """
+    dl_url= Bypass().bypass_fembed(link)
+    count = len(dl_url)
+    lst_link = [dl_url[i] for i in dl_url]
+    return lst_link[count-3]
 
 def sbembed(link: str) -> str:
     """ Sbembed direct link generator
