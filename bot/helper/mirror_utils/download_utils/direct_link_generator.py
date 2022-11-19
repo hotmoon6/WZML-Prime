@@ -257,7 +257,7 @@ def lowfembed(link: str) -> str:
     lst_link = [dl_url[i] for i in dl_url]
     return lst_link[count-3]
 
-def sbembed(link: str) -> str:
+def sbembed(self, url):
     """ Sbembed direct link generator
     Based on https://github.com/zevtyardt/lk21
     """
