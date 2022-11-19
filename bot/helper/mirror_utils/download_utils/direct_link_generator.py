@@ -257,25 +257,14 @@ def lowfembed(link: str) -> str:
     lst_link = [dl_url[i] for i in dl_url]
     return lst_link[count-3]
 
-def sbembed(self, url):
+def sbembed(link: str) -> str:
     """ Sbembed direct link generator
     Based on https://github.com/zevtyardt/lk21
     """
-    raw = self.session.get(url)
-        soup = self.soup(raw)
-
-        result = {}
-        for a in soup.findAll("a", onclick=re.compile(r"^download_video[^>]+")):
-            data = dict(zip(["id", "mode", "hash"], re.findall(
-                r"[\"']([^\"']+)[\"']", a["onclick"])))
-            data["op"] = "download_orig"
-
-            raw = self.session.get("https://sbembed.com/dl", params=data)
-            soup = self.soup(raw)
-
-            if (direct := soup.find("a", text=re.compile("(?i)^direct"))):
-                result[a.text] = direct["href"]
-        return result
+    dl_url= Bypass().bypass_fembed(link)
+    count = len(dl_url)
+    lst_link = [dl_url[i] for i in dl_url]
+    return lst_link[count-1]
 
 def onedrive(link: str) -> str:
     """ Onedrive direct link generator
